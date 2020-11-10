@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import { WILD_APRICOT_API_KEY } from './config';
 
 class WildApricot {
   public host = '';
@@ -12,7 +11,7 @@ class WildApricot {
     const host = 'https://oauth.wildapricot.org';
     const url = `${host}/auth/token`;
     const auth = Buffer
-      .from(`APIKEY:${WILD_APRICOT_API_KEY}`)
+      .from(`APIKEY:${process.env.WILD_APRICOT_API_KEY}`)
       .toString('base64');
 
     const result: AuthResponse = await fetch(url, {

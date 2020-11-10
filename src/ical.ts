@@ -1,31 +1,17 @@
-import { wildApricot } from "./wild-apricot";
-import iCal from 'ical-generator';
+import { getCalendar } from './calendar';
 
-export async function getCalendar() {
-  console.log(`Refreshing ics feed from Wild Apricot`);
+const cacheMaxAge = 60 * 30; // 30 minutes;
 
-  const events = await wildApricot.getEvents();
-  const cal = iCal({
-    domain: 'ggtc.org',
-    prodId: {
-      company: 'Golden Gate Triathlon Club',
-      product: 'GGTC'
-    },
-    name: 'GGTC Events',
-    timezone: 'America/Los_Angeles'
+async function app(req: any, res: any) {
+  const calendar = await getCalendar();
+
+  res.writeHead(200, {
+    'Cache-Control': `s-max-age=${cacheMaxAge}, stale-while-revalidate`,
+    'Content-Type': 'text/calendar; charset=utf-8',
+    'Content-Disposition': 'attachment; filename="calendar.ics"'
   });
 
-  for (const event of events) {
-    cal.createEvent({
-      start: event.StartDate,
-      end: event.EndDate,
-      summary: event.Name,
-      url: event.Url,
-      location: event.Location,
-    });
-  }
+  res.end(calendar.toString());
+};
 
-  console.log(`Finished refreshing feed`);
-
-  return cal;
-}
+export default app;
