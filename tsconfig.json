@@ -1,9 +1,8 @@
 {
   "extends": "@tsconfig/node12/tsconfig.json",
   "compilerOptions": {
-    "sourceMap": true,
-    "outDir": "api"
+    "module": "CommonJS",
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "api"],
   "exclude": ["node_modules", "**/*.spec.ts"],
 }
