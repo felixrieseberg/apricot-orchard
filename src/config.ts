@@ -1,0 +1,1 @@
+export const WILD_APRICOT_API_KEY = process.env.WILD_APRICOT_API_KEY;
