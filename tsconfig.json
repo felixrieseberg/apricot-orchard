@@ -2,7 +2,7 @@
   "extends": "@tsconfig/node12/tsconfig.json",
   "compilerOptions": {
     "sourceMap": true,
-    "outDir": "public/api"
+    "outDir": "api"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"],
