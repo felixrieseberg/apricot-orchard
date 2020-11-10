@@ -21,3 +21,4 @@ parcel-bundle-reports/
 .verdaccio_storage/
 sourcemap-info.json
 api
+*.js
