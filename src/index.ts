@@ -1,23 +1,20 @@
 import express from 'express';
-import { events } from './ical';
+import { getCalendar } from './ical';
 
 const app = express();
 const port = process.env.PORT || 3030;
+const cacheMaxAge = 60 * 30; // 30 minutes;
 
-async function main() {
-  app.get('/', (req, res) => {
-    res.send('Hello World!')
+app.get('/ics', async (req, res) => {
+  const calendar = await getCalendar();
+
+  res.writeHead(200, {
+    'Cache-Control': `s-max-age=${cacheMaxAge}, stale-while-revalidate`,
+    'Content-Type': 'text/calendar; charset=utf-8',
+    'Content-Disposition': 'attachment; filename="calendar.ics"'
   });
 
-  app.get('/ics', (req, res) => {
-    if (events.cal) {
-      events.cal.serve(res);
-    }
-  });
+  res.end(calendar.toString());
+});
 
-  app.listen(port, () => {
-    console.log(`Apricot Orchard listening at http://localhost:${port}`)
-  });
-}
-
-main();
+export default app;
